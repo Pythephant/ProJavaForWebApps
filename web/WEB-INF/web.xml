@@ -13,25 +13,7 @@
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
 
-	<servlet>
-		<servlet-name>helloServlet</servlet-name>
-		<servlet-class>com.helloworld.HelloServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>helloServlet</servlet-name>
-		<url-pattern>/hello</url-pattern>
-	</servlet-mapping>
-	
-	<servlet>
-		<servlet-name>newHello</servlet-name>
-		<servlet-class>com.helloworld.HelloServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>newHello</servlet-name>
-		<url-pattern>/greeting</url-pattern>
-		<url-pattern>/salutation</url-pattern>
-	</servlet-mapping>
+
 	
 
 </web-app>
