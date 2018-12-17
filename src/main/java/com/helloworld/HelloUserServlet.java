@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "helloUser", urlPatterns = { "/greeting", "/wazzup" })
+@WebServlet(name = "helloUser", urlPatterns = { "/hello-user" })
 public class HelloUserServlet extends HttpServlet {
 
 	private static final String DEFAULT_USER = "GUEST";

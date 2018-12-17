@@ -30,7 +30,7 @@ public class TicketServlet extends HttpServlet {
 			action = "list";
 		switch (action) {
 		case "create":
-			this.showTicketForm(resp);
+			this.showTicketForm(req, resp);
 			break;
 		case "view":
 			this.viewTicket(req, resp);
@@ -47,6 +47,7 @@ public class TicketServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setCharacterEncoding("utf-8");
 		String action = req.getParameter("action");
 		if (action == null)
 			action = "list";
@@ -61,24 +62,9 @@ public class TicketServlet extends HttpServlet {
 		}
 	}
 
-	private void showTicketForm(HttpServletResponse response) throws IOException {
-		PrintWriter writer = this.writeHeader(response);
-
-		writer.append("<h2>Create a Ticket</h2>\r\n");
-		writer.append("<form method=\"POST\" action=\"tickets\" ").append("enctype=\"multipart/form-data\">\r\n");
-		writer.append("<input type=\"hidden\" name=\"action\" ").append("value=\"create\"/>\r\n");
-		writer.append("Your Name<br/>\r\n");
-		writer.append("<input type=\"text\" name=\"customerName\"/><br/><br/>\r\n");
-		writer.append("Subject<br/>\r\n");
-		writer.append("<input type=\"text\" name=\"subject\"/><br/><br/>\r\n");
-		writer.append("Body<br/>\r\n");
-		writer.append("<textarea name=\"body\" rows=\"5\" cols=\"30\">").append("</textarea><br/><br/>\r\n");
-		writer.append("<b>Attachments</b><br/>\r\n");
-		writer.append("<input type=\"file\" name=\"file1\"/><br/><br/>\r\n");
-		writer.append("<input type=\"submit\" value=\"Submit\"/>\r\n");
-		writer.append("</form>\r\n");
-
-		this.writeFooter(writer);
+	private void showTicketForm(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
+		request.getRequestDispatcher("/WEB-INF/jsp/tickets/ticketForm.jsp").forward(request, response);
 	}
 
 	private void viewTicket(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -161,7 +147,7 @@ public class TicketServlet extends HttpServlet {
 		Ticket ticket = new Ticket();
 		ticket.setCustomerName(request.getParameter("customerName"));
 		ticket.setSubject(request.getParameter("subject"));
-		ticket.setBody("body");
+		ticket.setBody(request.getParameter("body"));
 
 		Part filePart = request.getPart("file1");
 		if (filePart != null && filePart.getSize() > 0) {
