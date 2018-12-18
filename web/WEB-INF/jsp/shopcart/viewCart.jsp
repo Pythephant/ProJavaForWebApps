@@ -5,7 +5,7 @@
 </head>
 <body>
 	<h2>View The Current Cart</h2>
-	<a href="<c:url value="/shop"/>">Product List</a>
+	<a href="<c:url value="/shop"/>">Product List</a> <a href="<c:url value="/shop?action=emptyCart"/>">Empty the Cart</a>
 	<br />
 	<%
 		Map<Integer, String> products = (Map<Integer, String>) request.getAttribute("products");
@@ -18,5 +18,6 @@
 			}
 		}
 	%>
+
 </body>
 </html>
