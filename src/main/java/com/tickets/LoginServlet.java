@@ -23,6 +23,11 @@ public class LoginServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session = req.getSession();
+		if (req.getParameter("logout") != null) {
+			session.invalidate();
+			resp.sendRedirect("login");
+			return;
+		}
 		if (session.getAttribute("username") != null) {
 			resp.sendRedirect("tickets");
 			return;
@@ -43,7 +48,7 @@ public class LoginServlet extends HttpServlet {
 		String passwd = req.getParameter("passwd");
 		if (username == null || passwd == null || LoginServlet.userDatabase.containsKey(username) == false
 				|| passwd.equals(LoginServlet.userDatabase.get(username)) == false) {
-			session.setAttribute("loginFailed", true);
+			req.setAttribute("loginFailed", true);
 			req.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(req, resp);
 		} else {
 			session.setAttribute("username", username);

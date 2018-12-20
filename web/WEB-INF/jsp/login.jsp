@@ -9,7 +9,7 @@
 	<br>
 	<br>
 	<%
-		if ((Boolean) request.getAttribute("loginFailed"))
+		if (((Boolean) request.getAttribute("loginFailed")))
 			out.println("Login failed. please try again");
 	%>
 	<form method="POST" action="<c:url value="/login" />">
