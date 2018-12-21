@@ -24,7 +24,7 @@
 			<default-content-type>text/html</default-content-type>
 		</jsp-property-group>
 	</jsp-config>
-	
+
 	<session-config>
 		<session-timeout>5</session-timeout>
 		<cookie-config>
@@ -32,5 +32,10 @@
 		</cookie-config>
 		<tracking-mode>COOKIE</tracking-mode>
 	</session-config>
+
+	<context-param>
+		<param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
+		<param-value>AddressContact</param-value>
+	</context-param>
 
 </web-app>
