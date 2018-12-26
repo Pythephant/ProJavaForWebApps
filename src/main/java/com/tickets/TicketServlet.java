@@ -173,19 +173,5 @@ public class TicketServlet extends HttpServlet {
 		}
 	}
 
-	private PrintWriter writeHeader(HttpServletResponse response) throws IOException {
-		response.setContentType("text/html");
-		response.setCharacterEncoding("UTF-8");
-
-		PrintWriter writer = response.getWriter();
-		writer.append("<!DOCTYPE html>\r\n").append("<html>\r\n").append("    <head>\r\n")
-				.append("        <title>Customer Support</title>\r\n").append("    </head>\r\n")
-				.append("    <body>\r\n");
-
-		return writer;
-	}
-
-	private void writeFooter(PrintWriter writer) {
-		writer.append("    </body>\r\n").append("</html>\r\n");
-	}
+	
 }
