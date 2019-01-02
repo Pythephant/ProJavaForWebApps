@@ -1,9 +1,6 @@
 <%@ page import="com.tickets.Ticket"%>
 <%@ page import="com.tickets.Attachment"%>
-<%
-	String ticketId = (String) request.getAttribute("ticketId");
-	Ticket ticket = (Ticket) request.getAttribute("ticket");
-%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,33 +8,30 @@
 </head>
 
 <body>
-	<h2>
-		Ticket #<%=ticketId%>:
-		<%=ticket.getSubject()%></h2>
-	<i>Customer Name: <%=ticket.getCustomerName()%></i>
+	<h2>Ticket #${ticketId }:${ticket.subject }</h2>
+	<i>Customer Name: ${ticket.customerName }</i>
+	<br>
+	<br> ${ticket.getBody() }
 	<br>
 	<br>
-	<%=ticket.getBody()%><br>
-	<br>
-	<%
-		if (ticket.getNumberOfAttachments() > 0) {
-	%>Attachments:
-	<%
-		int i = 0;
-			for (Attachment a : ticket.getAttachements().values()) {
-				if (i++ > 0)
-					out.print(", ");
-	%><a
-		href="<c:url value="tickets">
+	<c:if test="${ticket.getNumberOfAttachments()>0 }">
+		
+		Attachemnts:
+		<c:forEach items="${ticket.getAttachments()}" var="a" varStatus="status">
+			<c:if test="${!status.first}">, </c:if>
+			<a
+				href="<c:url value="tickets">
 					<c:param name="action" value="download"/>
-					<c:param name="ticketId" value="<%=ticketId%>" />
-					<c:param name="attachment" value="<%=a.getName()%>" />
-				</c:url>"><%=a.getName()%></a>
-	<%
-		}
-		}
-	%>
-	<br><br><br>
+					<c:param name="ticketId" value="${ticketId }" />
+					<c:param name="attachment" value="${a.name }%>" />
+				</c:url>">${a.name }</a>
+			
+		</c:forEach>
+	</c:if>
+	
+	<br>
+	<br>
+	<br>
 	<a href="<c:url value="/tickets"></c:url>">Return to list Tickets</a>
 </body>
 </html>
