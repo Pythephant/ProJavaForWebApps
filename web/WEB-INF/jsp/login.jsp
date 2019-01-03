@@ -8,10 +8,10 @@
 	You must login to access the customer support site.
 	<br>
 	<br>
-	<%
-		if (((Boolean) request.getAttribute("loginFailed")))
-			out.println("Login failed. please try again");
-	%>
+	<c:if test="${loginFailed}">
+		<c:out value="Login failed. please try again" />
+	</c:if>
+	
 	<form method="POST" action="<c:url value="/login" />">
 		Username:<input type="text" name="username"/> <br><br>
 		Password:<input type="password" name="passwd"><br><br>

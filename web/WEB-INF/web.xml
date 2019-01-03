@@ -37,5 +37,38 @@
 		<param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
 		<param-value>AddressContact</param-value>
 	</context-param>
+	
+	<filter>
+		<filter-name>normalFilter</filter-name>
+		<filter-class>com.filter.AnyRequestFilter</filter-class>
+		<async-supported>true</async-supported>
+	</filter>
+	<filter>
+		<filter-name>forwardFilter</filter-name>
+		<filter-class>com.filter.AnyRequestFilter</filter-class>
+		
+		<async-supported>true</async-supported>
+	</filter>
+	<filter>
+		<filter-name>asyncFilter</filter-name>
+		<filter-class>com.filter.AnyRequestFilter</filter-class>
+		<async-supported>true</async-supported>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>normalFilter</filter-name>
+		<url-pattern>/filter/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>forwardFilter</filter-name>
+		<url-pattern>/filter/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>asyncFilter</filter-name>
+		<url-pattern>/filter/*</url-pattern>
+		<dispatcher>ASYNC</dispatcher>
+	</filter-mapping>
 
 </web-app>

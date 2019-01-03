@@ -11,6 +11,6 @@
 	</head>
 
 	<body>
-		<jsp:doBody></jsp:doBody>
+		<jsp:doBody />
 	</body>
 </html>

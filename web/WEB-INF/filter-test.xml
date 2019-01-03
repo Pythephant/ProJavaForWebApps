@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
+    <filter>
+		<filter-name>filterA</filter-name>
+		<filter-class>com.filter.FilterA</filter-class>
+	</filter>
+	<filter>
+		<filter-name>filterB</filter-name>
+		<filter-class>com.filter.FilterB</filter-class>
+	</filter>
+	<filter>
+		<filter-name>filterC</filter-name>
+		<filter-class>com.filter.FilterC</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>filterA</filter-name>
+		<servlet-name>servletOne</servlet-name>
+		<servlet-name>servletTwo</servlet-name>
+		<servlet-name>servletThree</servlet-name>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>filterB</filter-name>
+		<url-pattern>/filter/servletTwo</url-pattern>
+		<url-pattern>/filter/servletThree</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>filterC</filter-name>
+		<url-pattern>/filter/servletTwo</url-pattern>
+	</filter-mapping>
+    
+</web-app>

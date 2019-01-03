@@ -8,11 +8,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name="helloServlet",urlPatterns="/hello")
+@WebServlet(name = "helloServlet", urlPatterns = "/hello")
 public class HelloServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.getWriter().println("Hello, World!" + this.getServletName());
+		String view = "hello";
+		req.getRequestDispatcher("/WEB-INF/jsp/hello/" + view + ".jsp").forward(req, resp);
 	}
 
 	@Override
