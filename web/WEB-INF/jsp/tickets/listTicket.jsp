@@ -20,7 +20,7 @@
 				<a
 					href="<c:url value="/tickets">
 							<c:param name="action" value="view" />
-							<c:param name="tickedId" value="${entry.key }" />
+							<c:param name="ticketId" value="${entry.key }" />
 						</c:url>">${entry.value.getSubject() }</a>
 						(customer:<c:out value="${entry.value.customerName }" />)<br>
 			</c:forEach>
