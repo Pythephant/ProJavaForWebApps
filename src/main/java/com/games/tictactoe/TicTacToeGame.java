@@ -1,6 +1,8 @@
 package com.games.tictactoe;
 
 import java.util.Random;
+import java.util.Scanner;
+
 
 public class TicTacToeGame {
 	private String player1;
@@ -30,6 +32,10 @@ public class TicTacToeGame {
 
 	public void setPlayer2(String player2) {
 		this.player2 = player2;
+	}
+
+	public Player getCurrentPlayer() {
+		return currentPlayer;
 	}
 
 	public Player getWinner() {
@@ -77,7 +83,7 @@ public class TicTacToeGame {
 	public Player calWinner() {
 		boolean draw = true;
 
-		// horizontal win
+		// horizontal winner
 		for (int i = 0; i < 3; i++) {
 			if (grid[i][0] == null || grid[i][1] == null || grid[i][2] == null)
 				draw = false;
@@ -85,6 +91,19 @@ public class TicTacToeGame {
 				return grid[i][0];
 		}
 
+		// vertical winner
+		for (int i = 0; i < 3; i++) {
+			if (grid[0][i] != null && grid[0][i] == grid[1][i] && grid[1][i] == grid[2][i])
+				return grid[0][i];
+		}
+
+		// diagonal winner
+		if (grid[0][0] != null && grid[0][0] == grid[1][1] && grid[1][1] == grid[2][2])
+			return grid[0][0];
+		if (grid[2][0] != null && grid[2][0] == grid[1][1] && grid[1][1] == grid[0][2])
+			return grid[2][0];
+
+		this.draw = draw;
 		return null;
 	}
 
@@ -96,5 +115,69 @@ public class TicTacToeGame {
 		public static Player random() {
 			return random.nextBoolean() ? Player1 : Player2;
 		}
+	}
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		System.out.print("Input the Player1's username:");
+		String player1 = sc.nextLine();
+		System.out.print("Input the Player2's username:");
+		String player2 = sc.nextLine();
+		TicTacToeGame game = new TicTacToeGame();
+		game.setPlayer1(player1);
+		game.setPlayer2(player2);
+		System.out.println("Game Started!");
+		game.start();
+		String curUser, moveStr;
+		int row, col;
+		while (!game.isOver()) {
+			System.out.println("=============================");
+			game.printGame();
+			curUser = game.getCurrentPlayer() == Player.Player1 ? game.getPlayer1() : game.getPlayer2();
+			System.out.print(curUser + " make your move(->:row,col):");
+			moveStr = sc.nextLine();
+			row = Integer.parseInt(moveStr.split(",")[0]);
+			col = Integer.parseInt(moveStr.split(",")[1]);
+			try {
+				game.move(game.getCurrentPlayer(), row, col);
+			}catch(IllegalArgumentException e) {
+				System.out.println(e.getMessage());
+				System.out.println("Please try again.");
+			}
+			System.out.println("=============================");
+		}
+
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		game.printGame();
+		if (game.isDraw()) {
+			System.out.println("Ooooops! It is a draw game, no one wins!");
+		} else {
+			System.out
+					.print("Winner is:" + (game.getWinner() == Player.Player1 ? game.getPlayer1() : game.getPlayer2()));
+		}
+	}
+
+	private void printGame() {
+		System.out.println("Player1:" + player1 + "  vs  Player2:" + player2);
+		System.out.println("Current Player:" + currentPlayer);
+		System.out.println("--------------------------");
+		System.out.println("row/col\t0\t1\t2");
+		System.out.println("--------------------------");
+		for (int i = 0; i < 3; i++) {
+			System.out.print(i + "\t");
+			for (int j = 0; j < 3; j++) {
+				if (grid[i][j] == Player.Player1) {
+					System.out.print("1\t");
+				} else if (grid[i][j] == Player.Player2) {
+					System.out.print("2\t");
+				} else {
+					System.out.print("*\t");
+				}
+			}
+			System.out.println();
+		}
+		System.out.println("--------------------------");
 	}
 }
