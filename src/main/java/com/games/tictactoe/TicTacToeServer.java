@@ -14,6 +14,9 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wrox.TicTacToeServer;
+import com.wrox.TicTacToeServer.Game;
+import com.wrox.TicTacToeServer.Message;
 
 @ServerEndpoint("/game/ticTacToe/{gameId}/{username}")
 public class TicTacToeServer {
@@ -47,12 +50,20 @@ public class TicTacToeServer {
 			if (game != null) {
 				session.close(
 						new CloseReason(CloseReason.CloseCodes.UNEXPECTED_CONDITION, "this game has alreay started."));
+				return;
 			}
 			List<String> actions = session.getRequestParameterMap().get("action");
 			if (actions != null && actions.size() == 1) {
 				String action = actions.get(0);
 				if ("join".equals(action)) {
-
+					game = pendingGames.get(gameId);
+					game.player2 = session;
+					pendingGames.remove(gameId);
+					startedGames.put(gameId, game);
+					game.ticTacToeGame.setPlayer2(username);
+					game.ticTacToeGame.start();
+					this.sendJsonMessage(game.player1, game, new GameStartedMessage(game.ticTacToeGame));
+					this.sendJsonMessage(game.player2, game, new GameStartedMessage(game.ticTacToeGame));
 				} else if ("start".equals(action)) {
 					game = pendingGames.get(gameId);
 					game.player1 = session;
@@ -65,6 +76,52 @@ public class TicTacToeServer {
 				session.close(new CloseReason(CloseReason.CloseCodes.UNEXPECTED_CONDITION, e.toString()));
 			} catch (IOException ignore) {
 			}
+		}
+	}
+
+	public static abstract class Message {
+		private final String action;
+
+		public Message(String action) {
+			this.action = action;
+		}
+
+		public String getAction() {
+			return this.action;
+		}
+	}
+
+	public static class GameStartedMessage extends Message {
+		private final TicTacToeGame game;
+
+		public GameStartedMessage(TicTacToeGame game) {
+			super("gameStarted");
+			this.game = game;
+		}
+
+		public TicTacToeGame getGame() {
+			return game;
+		}
+	}
+
+	private void sendJsonMessage(Session session, Game game, Message message) {
+		try {
+			session.getBasicRemote().sendText(TicTacToeServer.mapper.writeValueAsString(message));
+		} catch (IOException e) {
+			this.handleException(e, game);
+		}
+	}
+
+	private void handleException(Throwable t, Game game) {
+		t.printStackTrace();
+		String message = t.toString();
+		try {
+			game.player1.close(new CloseReason(CloseReason.CloseCodes.UNEXPECTED_CONDITION, message));
+		} catch (IOException ignore) {
+		}
+		try {
+			game.player2.close(new CloseReason(CloseReason.CloseCodes.UNEXPECTED_CONDITION, message));
+		} catch (IOException ignore) {
 		}
 	}
 

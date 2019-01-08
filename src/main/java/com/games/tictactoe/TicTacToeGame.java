@@ -3,7 +3,6 @@ package com.games.tictactoe;
 import java.util.Random;
 import java.util.Scanner;
 
-
 public class TicTacToeGame {
 	private String player1;
 	private String player2;
@@ -36,6 +35,10 @@ public class TicTacToeGame {
 
 	public Player getCurrentPlayer() {
 		return currentPlayer;
+	}
+
+	public String getNextMoveBy() {
+		return currentPlayer == Player.Player1 ? player1 : player2;
 	}
 
 	public Player getWinner() {
@@ -140,7 +143,7 @@ public class TicTacToeGame {
 			col = Integer.parseInt(moveStr.split(",")[1]);
 			try {
 				game.move(game.getCurrentPlayer(), row, col);
-			}catch(IllegalArgumentException e) {
+			} catch (IllegalArgumentException e) {
 				System.out.println(e.getMessage());
 				System.out.println("Please try again.");
 			}

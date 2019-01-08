@@ -94,7 +94,7 @@
                 try {
                     server = new WebSocket('ws://' + window.location.host +
                             '<c:url value="/game/ticTacToe/${gameId}/${username}">
-                                <c:param name="action" value="start" />
+                                <c:param name="action" value="${action}" />
                             </c:url>');
                 } catch(error) {
                     modalWaiting.modal('hide');

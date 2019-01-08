@@ -15,8 +15,8 @@
     		</c:when>
     		<c:otherwise>
     			Join a game which waiting for a second player.</br>
-    			<c:forEach items="pendingGames" var="e">
-    				<a href="javascript:void 0;" onclick="joinGame(${e.key})">Id:${e.key },User:${e.value.getPlayer1() }</a>
+    			<c:forEach items="${ pendingGames}" var="e">
+    				Id:${e.key },<a href="javascript:void 0;" onclick="joinGame(${e.key})">User:${e.value.getPlayer1() }</a><br>
     			</c:forEach>
     		</c:otherwise>
     	</c:choose>
