@@ -8,15 +8,15 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.websocket.CloseReason;
+import javax.websocket.OnClose;
+import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wrox.TicTacToeServer;
-import com.wrox.TicTacToeServer.Game;
-import com.wrox.TicTacToeServer.Message;
+import com.games.tictactoe.TicTacToeGame.Player;
 
 @ServerEndpoint("/game/ticTacToe/{gameId}/{username}")
 public class TicTacToeServer {
@@ -79,6 +79,57 @@ public class TicTacToeServer {
 		}
 	}
 
+	@OnMessage
+	public void onMessage(Session session, String message, @PathParam("gameId") long gameId) {
+		Game game = startedGames.get(gameId);
+		boolean isPlayer1 = (session == game.player1);
+		try {
+			Move move = TicTacToeServer.mapper.readValue(message, Move.class);
+			game.ticTacToeGame.move(isPlayer1 ? Player.Player1 : Player.Player2, move.getRow(), move.getColumn());
+			this.sendJsonMessage((isPlayer1?game.player2:game.player1), game, new OpponentMadeMoveMessage(move));
+			if (game.ticTacToeGame.isOver()) {
+				if (game.ticTacToeGame.isDraw()) {
+					this.sendJsonMessage(game.player1, game, new GameIsDrawMessage());
+					this.sendJsonMessage(game.player2, game, new GameIsDrawMessage());
+				} else {
+					boolean isPlayer1Win = (game.ticTacToeGame.getWinner()==Player.Player1);
+					this.sendJsonMessage(game.player1, game, new GameOverMessage(isPlayer1Win));
+					this.sendJsonMessage(game.player2, game, new GameOverMessage(!isPlayer1Win));
+				}
+				game.player1.close();
+				game.player2.close();
+			}
+		} catch (IOException e) {
+			handleException(e, game);
+		}
+	}
+
+	@OnClose
+	public void onClose(Session session, @PathParam("gameId") long gameId) {
+		Game game = TicTacToeServer.startedGames.get(gameId);
+		
+		
+		if(game == null) {	//pending games waiting for another player;
+			TicTacToeServer.pendingGames.remove(gameId);
+			return;
+		}else {
+			//started game
+			boolean isPlayer1 = (session == game.player1);
+			if(!game.ticTacToeGame.isOver()) {
+				this.sendJsonMessage((isPlayer1?game.player2:game.player1), game, new GameForfeitedMessage());
+				game.ticTacToeGame.forfeited(isPlayer1?Player.Player1:Player.Player2);
+				if(isPlayer1) {
+					game.player1=null;
+				}else {
+					game.player2=null;
+				}
+			}
+			if(game.player1==null && game.player2==null) {
+				TicTacToeServer.startedGames.remove(gameId);
+			}
+		}
+	}
+	
 	public static abstract class Message {
 		private final String action;
 
@@ -104,6 +155,44 @@ public class TicTacToeServer {
 		}
 	}
 
+	public static class OpponentMadeMoveMessage extends Message {
+		private final Move move;
+
+		public OpponentMadeMoveMessage(Move move) {
+			super("opponentMadeMove");
+			this.move = move;
+		}
+
+		public Move getMove() {
+			return move;
+		}
+	}
+
+	public static class GameOverMessage extends Message {
+		private final boolean winner;
+
+		public GameOverMessage(boolean winner) {
+			super("gameOver");
+			this.winner = winner;
+		}
+
+		public boolean getWinner() {
+			return winner;
+		}
+	}
+
+	public static class GameIsDrawMessage extends Message {
+		public GameIsDrawMessage() {
+			super("gameIsDraw");
+		}
+	}
+	
+	public static class GameForfeitedMessage extends Message {
+		public GameForfeitedMessage() {
+			super("gameForfeited");
+		}
+	}
+
 	private void sendJsonMessage(Session session, Game game, Message message) {
 		try {
 			session.getBasicRemote().sendText(TicTacToeServer.mapper.writeValueAsString(message));
@@ -123,6 +212,28 @@ public class TicTacToeServer {
 			game.player2.close(new CloseReason(CloseReason.CloseCodes.UNEXPECTED_CONDITION, message));
 		} catch (IOException ignore) {
 		}
+	}
+
+	public static class Move {
+		private int row;
+		private int column;
+
+		public int getRow() {
+			return row;
+		}
+
+		public void setRow(int row) {
+			this.row = row;
+		}
+
+		public int getColumn() {
+			return column;
+		}
+
+		public void setColumn(int column) {
+			this.column = column;
+		}
+
 	}
 
 	public static class Game {

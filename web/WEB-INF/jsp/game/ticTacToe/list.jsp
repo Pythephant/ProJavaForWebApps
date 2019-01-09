@@ -1,4 +1,7 @@
 <%--@elvariable id="pendingGames" type="java.util.Map<long, com.game.tictactoe.TicTacToeGame>"--%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,7 +17,7 @@
     			<i>There are no pending games, please start a new one</i>
     		</c:when>
     		<c:otherwise>
-    			Join a game which waiting for a second player.</br>
+    			Join a game which waiting for a second player.<br/>
     			<c:forEach items="${ pendingGames}" var="e">
     				Id:${e.key },<a href="javascript:void 0;" onclick="joinGame(${e.key})">User:${e.value.getPlayer1() }</a><br>
     			</c:forEach>

@@ -109,6 +109,11 @@ public class TicTacToeGame {
 		this.draw = draw;
 		return null;
 	}
+	
+	public void forfeited(Player forfeitPlayer) {
+		this.over = true;
+		this.winner = (forfeitPlayer==Player.Player1?Player.Player2:Player.Player1);
+	}
 
 	public enum Player {
 		Player1, Player2;
@@ -119,7 +124,9 @@ public class TicTacToeGame {
 			return random.nextBoolean() ? Player1 : Player2;
 		}
 	}
-
+	
+	
+	//standalone test
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		System.out.print("Input the Player1's username:");
