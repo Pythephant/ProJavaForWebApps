@@ -70,5 +70,44 @@
 		<url-pattern>/filter/*</url-pattern>
 		<dispatcher>ASYNC</dispatcher>
 	</filter-mapping>
+	
+	<servlet>
+		<servlet-name>clusterNode1</servlet-name>
+		<servlet-class>com.websocket.simulatecluster.ClusterClientServlet</servlet-class>
+		<init-param>
+			<param-name>nodeId</param-name>
+			<param-value>1</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>clusterNode1</servlet-name>
+		<url-pattern>/cluster/1</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>clusterNode2</servlet-name>
+		<servlet-class>com.websocket.simulatecluster.ClusterClientServlet</servlet-class>
+		<init-param>
+			<param-name>nodeId</param-name>
+			<param-value>2</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>clusterNode2</servlet-name>
+		<url-pattern>/cluster/2</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>clusterNode3</servlet-name>
+		<servlet-class>com.websocket.simulatecluster.ClusterClientServlet</servlet-class>
+		<init-param>
+			<param-name>nodeId</param-name>
+			<param-value>3</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>clusterNode3</servlet-name>
+		<url-pattern>/cluster/3</url-pattern>
+	</servlet-mapping>
 
 </web-app>
