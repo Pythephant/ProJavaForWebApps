@@ -1,11 +1,5 @@
 <%@page import="java.util.Map,com.tickets.*"%>
-<html>
-<head>
-<title>Customer Support</title>
-</head>
-
-<body>
-	<h2>Tickets</h2>
+<template:basic htmlTitle="List Tickets" bodyTitle="List Tickets">
 	<a
 		href="<c:url value="/tickets">
 			<c:param name="action" value="create" />
@@ -26,6 +20,4 @@
 			</c:forEach>
 		</c:otherwise>
 	</c:choose>
-
-</body>
-</html>
+</template:basic>

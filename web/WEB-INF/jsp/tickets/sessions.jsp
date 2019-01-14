@@ -1,28 +1,14 @@
-<%@ page import="java.util.Map"%>
+<%@ page import="java.util.Date" %>
+<template:basic htmlTitle="Current Sessions" bodyTitle="Sessions">
+	<jsp:useBean id="currentTime" class="java.util.Date" />
+	<c:forEach items="${sessionsMap}" var="entry">
+		${entry.value.getId()} - ${entry.value.getAttribute("username") }
+		<c:if test="${entry.value.getId()==pageContext.session.id }">
+			<b> (you)</b>
+		</c:if>
+		, last accessed at ${(currentTime.time-entry.value.getLastAccessedTime())/1000 } seconds.
+		<br/>
+	</c:forEach>
 
-<html>
-<head>
-<title>Customer Support</title>
-</head>
-<body>
-	<h2>Sessions</h2>
-	<%
-		Map<String, HttpSession> sessionsMap = (Map<String, HttpSession>) request.getAttribute("sessionsMap");
-	%>
-	<p>
-		There are a total of
-		<%=sessionsMap.size()%>
-		active sessions in the application
-	</p>
-	<%
-		long currentTime = System.currentTimeMillis();
-		for (HttpSession s : sessionsMap.values()) {
-			out.print(s.getId() + " - " + s.getAttribute("username"));
-			if (s.getId().equals(session.getId()))
-				out.print("(you)");
-			out.print(" - last active " + (currentTime - s.getLastAccessedTime()) / 1000 + " seconds.");
-			out.println("<br>");
-		}
-	%>
-</body>
-</html>
+
+</template:basic>

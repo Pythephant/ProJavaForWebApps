@@ -55,6 +55,5 @@ public class LoginServlet extends HttpServlet {
 			req.changeSessionId();
 			resp.sendRedirect("tickets");
 		}
-
 	}
 }

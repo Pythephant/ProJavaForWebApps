@@ -18,7 +18,7 @@
 			<url-pattern>*.jsp</url-pattern>
 			<url-pattern>*.jspf</url-pattern>
 			<page-encoding>UTF-8</page-encoding>
-			<scripting-invalid>false</scripting-invalid>
+			<scripting-invalid>true</scripting-invalid>
 			<include-prelude>/WEB-INF/jsp/base.jspf</include-prelude>
 			<trim-directive-whitespaces>true</trim-directive-whitespaces>
 			<default-content-type>text/html</default-content-type>
@@ -37,7 +37,7 @@
 		<param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
 		<param-value>AddressContact</param-value>
 	</context-param>
-	
+
 	<filter>
 		<filter-name>normalFilter</filter-name>
 		<filter-class>com.filter.AnyRequestFilter</filter-class>
@@ -46,7 +46,7 @@
 	<filter>
 		<filter-name>forwardFilter</filter-name>
 		<filter-class>com.filter.AnyRequestFilter</filter-class>
-		
+
 		<async-supported>true</async-supported>
 	</filter>
 	<filter>
@@ -54,7 +54,7 @@
 		<filter-class>com.filter.AnyRequestFilter</filter-class>
 		<async-supported>true</async-supported>
 	</filter>
-	
+
 	<filter-mapping>
 		<filter-name>normalFilter</filter-name>
 		<url-pattern>/filter/*</url-pattern>
@@ -70,7 +70,7 @@
 		<url-pattern>/filter/*</url-pattern>
 		<dispatcher>ASYNC</dispatcher>
 	</filter-mapping>
-	
+
 	<servlet>
 		<servlet-name>clusterNode1</servlet-name>
 		<servlet-class>com.websocket.simulatecluster.ClusterClientServlet</servlet-class>
@@ -83,7 +83,7 @@
 		<servlet-name>clusterNode1</servlet-name>
 		<url-pattern>/cluster/1</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>clusterNode2</servlet-name>
 		<servlet-class>com.websocket.simulatecluster.ClusterClientServlet</servlet-class>
@@ -96,7 +96,7 @@
 		<servlet-name>clusterNode2</servlet-name>
 		<url-pattern>/cluster/2</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>clusterNode3</servlet-name>
 		<servlet-class>com.websocket.simulatecluster.ClusterClientServlet</servlet-class>
