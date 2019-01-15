@@ -86,13 +86,13 @@ public class TicTacToeServer {
 		try {
 			Move move = TicTacToeServer.mapper.readValue(message, Move.class);
 			game.ticTacToeGame.move(isPlayer1 ? Player.Player1 : Player.Player2, move.getRow(), move.getColumn());
-			this.sendJsonMessage((isPlayer1?game.player2:game.player1), game, new OpponentMadeMoveMessage(move));
+			this.sendJsonMessage((isPlayer1 ? game.player2 : game.player1), game, new OpponentMadeMoveMessage(move));
 			if (game.ticTacToeGame.isOver()) {
 				if (game.ticTacToeGame.isDraw()) {
 					this.sendJsonMessage(game.player1, game, new GameIsDrawMessage());
 					this.sendJsonMessage(game.player2, game, new GameIsDrawMessage());
 				} else {
-					boolean isPlayer1Win = (game.ticTacToeGame.getWinner()==Player.Player1);
+					boolean isPlayer1Win = (game.ticTacToeGame.getWinner() == Player.Player1);
 					this.sendJsonMessage(game.player1, game, new GameOverMessage(isPlayer1Win));
 					this.sendJsonMessage(game.player2, game, new GameOverMessage(!isPlayer1Win));
 				}
@@ -107,29 +107,28 @@ public class TicTacToeServer {
 	@OnClose
 	public void onClose(Session session, @PathParam("gameId") long gameId) {
 		Game game = TicTacToeServer.startedGames.get(gameId);
-		
-		
-		if(game == null) {	//pending games waiting for another player;
+
+		if (game == null) { // pending games waiting for another player;
 			TicTacToeServer.pendingGames.remove(gameId);
 			return;
-		}else {
-			//started game
+		} else {
+			// started game
 			boolean isPlayer1 = (session == game.player1);
-			if(!game.ticTacToeGame.isOver()) {
-				this.sendJsonMessage((isPlayer1?game.player2:game.player1), game, new GameForfeitedMessage());
-				game.ticTacToeGame.forfeited(isPlayer1?Player.Player1:Player.Player2);
-				if(isPlayer1) {
-					game.player1=null;
-				}else {
-					game.player2=null;
+			if (!game.ticTacToeGame.isOver()) {
+				this.sendJsonMessage((isPlayer1 ? game.player2 : game.player1), game, new GameForfeitedMessage());
+				game.ticTacToeGame.forfeited(isPlayer1 ? Player.Player1 : Player.Player2);
+				if (isPlayer1) {
+					game.player1 = null;
+				} else {
+					game.player2 = null;
 				}
 			}
-			if(game.player1==null && game.player2==null) {
+			if (game.player1 == null && game.player2 == null) {
 				TicTacToeServer.startedGames.remove(gameId);
 			}
 		}
 	}
-	
+
 	public static abstract class Message {
 		private final String action;
 
@@ -186,7 +185,7 @@ public class TicTacToeServer {
 			super("gameIsDraw");
 		}
 	}
-	
+
 	public static class GameForfeitedMessage extends Message {
 		public GameForfeitedMessage() {
 			super("gameForfeited");
