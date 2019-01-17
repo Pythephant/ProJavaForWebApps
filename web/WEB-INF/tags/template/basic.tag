@@ -9,6 +9,27 @@
 <%@ include file="/WEB-INF/jsp/base.jspf"%>
 <template:main htmlTitle="${htmlTitle }" bodyTitle="${bodyTitle }">
 	<jsp:attribute name="headContent">
+		<link rel="stylesheet"
+			href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css" />
+		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+		<script
+			src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.0.0/moment.min.js"></script>
+		<script type="text/javascript" language="javascript">
+	    	var postInvisibleForm = new function(url, fields){
+	    		var form = $('<form id="mapForm" method="post"></form>')
+	    					.attr({action:url, style:'display: none;'});
+	    		for(var key in fields){
+	    			if(fields.hasOwnProperty(key))
+	    				form.append($('<input type="hidden">').attr({name:key, value:fields[key]}));
+	    		}
+	    		$('body').append(form);
+	    		form.submit();
+	    		
+	    	};
+	    	var newChat = new function(){
+	    		postInvisibleForm('<c:url value="/chat"/>',{action:'new'});	
+	    	};
+	    </script>
 		<jsp:invoke fragment="extraHeadContent" />
 	</jsp:attribute>
 	<jsp:attribute name="navigationContent">
