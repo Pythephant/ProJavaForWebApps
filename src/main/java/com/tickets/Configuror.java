@@ -20,7 +20,7 @@ public class Configuror implements  ServletContextListener{
 		ServletContext context = event.getServletContext();
 		FilterRegistration.Dynamic registry = context.addFilter("authenticationFilter", new AuthenticationFilter());
 		registry.setAsyncSupported(true);
-		registry.addMappingForUrlPatterns(null, false, "/tickets","/sessions");
+		registry.addMappingForUrlPatterns(null, false, "/tickets","/sessions","/chat");
 		
 	}
 

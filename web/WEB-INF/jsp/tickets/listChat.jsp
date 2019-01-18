@@ -7,15 +7,15 @@
 		<c:otherwise>
 			Click on a chat room to start:<br />
 			<br />
-			<c:forEach items="${chatRooms }" var="room">
-				<a href="javascript:void 0;" onclick="join(${room.roomId})">
-					${room.roomId } : ${room.customerUsername }</a>
+			<c:forEach items="${chatRooms }" var="entry">
+				<a href="javascript:void 0;" onclick="join(${entry.value.roomId})">
+					${entry.value.roomId } : ${entry.value.customerUsername }</a>
 			</c:forEach>
 		</c:otherwise>
 	</c:choose>
 	<script type="text/javascript" language="javascript">
 		var join = function(id){
-			postInvisibleForm('<c:url value="/char" />',{action:'join', roomId:id});
+			postInvisibleForm('<c:url value="/chat" />',{action:'join', roomId:id});
 		};
 	</script>
 

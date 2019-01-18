@@ -100,14 +100,14 @@
     				modalError.modal('show');
     			};
     			
-    			server.onmessage = function(event){
+    			/* server.onmessage = function(event){
     				if(event.data instanceof ArrayBuffer){
     					var message = JSON.parse(
     							String.fromCharCode.apply(null, new Unit8Array(event.data))
     							);
     					objectMessage(message);
     					if(message.type == 'JOINED'){
-    						otherJoined = ture;
+    						otherJoined = true;
     						if(username != message.user)
     							infoMessage('user: '+message.user +'has entered the chat room.');
     					}
@@ -118,7 +118,25 @@
     					modalError.modal('show');
     				}
     				
-    			};
+    			}; */
+    			server.onmessage = function(event) {
+                    if(event.data instanceof ArrayBuffer) {
+                        var message = JSON.parse(String.fromCharCode.apply(
+                                null, new Uint8Array(event.data)
+                        ));
+                        objectMessage(message);
+                        if(message.type == 'JOINED') {
+                            otherJoined = true;
+                            if(username != message.user)
+                                infoMessage('You are now chatting with ' +
+                                        message.user + '.');
+                        }
+                    } else {
+                        modalErrorBody.text('Unexpected data type [' +
+                                typeof(event.data) + '].');
+                        modalError.modal('show');
+                    }
+                };
     			
     			send = function(){
     				var thisContent = messageArea.get(0).value;

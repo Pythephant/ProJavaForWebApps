@@ -18,7 +18,7 @@ public class ChatServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String action = req.getParameter("action");
 		if ("list".equals(action)) {
-			req.setAttribute("sessions", ChatEndpoint.currentChatRooms);
+			req.setAttribute("chatRooms", ChatEndpoint.currentChatRooms);
 			req.getRequestDispatcher("/WEB-INF/jsp/tickets/listChat.jsp").forward(req, resp);
 			return;
 		} else {

@@ -15,7 +15,7 @@
 		<script
 			src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.0.0/moment.min.js"></script>
 		<script type="text/javascript" language="javascript">
-	    	var postInvisibleForm = new function(url, fields){
+	    	var postInvisibleForm =  function(url, fields){
 	    		var form = $('<form id="mapForm" method="post"></form>')
 	    					.attr({action:url, style:'display: none;'});
 	    		for(var key in fields){
@@ -26,8 +26,8 @@
 	    		form.submit();
 	    		
 	    	};
-	    	var newChat = new function(){
-	    		postInvisibleForm('<c:url value="/chat"/>',{action:'new'});	
+	    	var newChat =  function(){
+	    		postInvisibleForm('<c:url value="/chat" />',{action:'new'});	
 	    	};
 	    </script>
 		<jsp:invoke fragment="extraHeadContent" />
@@ -44,13 +44,13 @@
 			sessions
 		</a>
 		<br />
-		<a href="javascript:void 0" onclick="newChat()">Create ChatRoom</a>
+		<a href="javascript:void 0;" onclick="newChat()">create chatRoom</a>
 		<br/>
 		<a
 			href="<c:url value="/chat" >
 					<c:param name="action" value="list"/>
 				  </c:url>">
-		View CurrentChat</a>
+		view currentChat</a>
 		<br>
 		<c:choose>
 			<c:when test="${username!=null }">
