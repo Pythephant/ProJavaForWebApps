@@ -58,7 +58,7 @@
         			if(message.user !=null){
         				var c = message.user==username ? 'user-me' : 'user-you';
         				log.append(
-        						$('<span>').addClass(c).text(date+' '+message.user+':\xA40')
+        						$('<span>').addClass(c).text(date+' '+message.user+':\xA0')
         						).append(
         							$('<span>').text(message.content)		
         						);
@@ -100,16 +100,16 @@
     				modalError.modal('show');
     			};
     			
-    			/* server.onmessage = function(event){
+    			server.onmessage = function(event){
     				if(event.data instanceof ArrayBuffer){
     					var message = JSON.parse(
-    							String.fromCharCode.apply(null, new Unit8Array(event.data))
+    							String.fromCharCode.apply(null, new Uint8Array(event.data))
     							);
     					objectMessage(message);
     					if(message.type == 'JOINED'){
     						otherJoined = true;
     						if(username != message.user)
-    							infoMessage('user: '+message.user +'has entered the chat room.');
+    							infoMessage('user: '+message.user +' has entered the chat room.');
     					}
     					
     				}else{
@@ -118,25 +118,8 @@
     					modalError.modal('show');
     				}
     				
-    			}; */
-    			server.onmessage = function(event) {
-                    if(event.data instanceof ArrayBuffer) {
-                        var message = JSON.parse(String.fromCharCode.apply(
-                                null, new Uint8Array(event.data)
-                        ));
-                        objectMessage(message);
-                        if(message.type == 'JOINED') {
-                            otherJoined = true;
-                            if(username != message.user)
-                                infoMessage('You are now chatting with ' +
-                                        message.user + '.');
-                        }
-                    } else {
-                        modalErrorBody.text('Unexpected data type [' +
-                                typeof(event.data) + '].');
-                        modalError.modal('show');
-                    }
-                };
+    			}; 
+    			
     			
     			send = function(){
     				var thisContent = messageArea.get(0).value;
@@ -158,7 +141,7 @@
     						var json = JSON.stringify(message);
     						var length = json.length;
     						var buffer = new ArrayBuffer(length);
-    						var array = new Unit8Array(buffer);
+    						var array = new Uint8Array(buffer);
     						for(var i=0;i<length;i++){
     							array[i] = json.charCodeAt(i);
     						}

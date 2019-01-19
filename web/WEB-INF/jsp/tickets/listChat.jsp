@@ -10,6 +10,7 @@
 			<c:forEach items="${chatRooms }" var="entry">
 				<a href="javascript:void 0;" onclick="join(${entry.value.roomId})">
 					${entry.value.roomId } : ${entry.value.customerUsername }</a>
+					<br />
 			</c:forEach>
 		</c:otherwise>
 	</c:choose>
