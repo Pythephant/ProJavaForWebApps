@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="WARN">
+	<appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout
+				pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+		</Console>
+		<RollingFile name="FileAppender"
+			fileName="logs/fileAppender.log"
+			filePattern="logs/fileAppender-%d{yyyy-MM-dd}-%i.log">
+			<PatternLayout>
+                <pattern>%d{HH:mm:ss.SSS} [%t] %X{id} %X{username} %-5level %c{36} %l: %msg%n</pattern>
+            </PatternLayout>
+			<Policies>
+				<SizeBasedTriggeringPolicy size="10 MB" />
+			</Policies>
+			<DefaultRolloverStrategy min="1" max="4" />
+		</RollingFile>
+		<RollingFile name="AnotherFile"
+			fileName="logs/anotherFile.log"
+			filePattern="logs/anotherFile-%d{yyyy-MM-dd}-%i.log">
+			<PatternLayout>
+				<pattern>%d{HH:mm:ss.SSS} [%t] %X{id} %X{username} %-5level %c{36} %l:%msg%n</pattern>
+
+			</PatternLayout>
+			<Policies>
+				<SizeBasedTriggeringPolicy size="10 KB" />
+			</Policies>
+			<DefaultRolloverStrategy min="1" max="4" />
+		</RollingFile>
+	</appenders>
+	<loggers>
+		<root level="warn">
+			<appender-ref ref="Console" />
+		</root>
+		<logger name="com" level="info" additivity="false">
+			<appender-ref ref="FileAppender" />
+			<appender-ref ref="Console">
+				<MarkerFilter marker="JASON_CONSOLE" onMatch="NEUTRAL"
+					onMismatch="DENY" />
+
+			</appender-ref>
+		</logger>
+		<logger name="com.logger" level="info" additivity="true">
+			<appender-ref ref="AnotherFile" />
+
+		</logger>
+		<logger name="org.apache" level="info">
+			<appender-ref ref="FileAppender"></appender-ref>
+		</logger>
+	</loggers>
+</configuration>

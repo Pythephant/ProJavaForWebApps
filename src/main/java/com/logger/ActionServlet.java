@@ -21,7 +21,7 @@ public class ActionServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String action = (String) req.getAttribute("action");
+		String action = (String) req.getParameter("action");
 		String content = null;
 		if (action != null) {
 			switch (action) {
@@ -41,7 +41,8 @@ public class ActionServlet extends HttpServlet {
 			}
 
 		} else {
-
+			log.error("no action is specified");
+			resp.getWriter().write("no action is specified");
 		}
 
 	}
@@ -53,7 +54,7 @@ public class ActionServlet extends HttpServlet {
 			log.info("Successful read file {}.", fileName);
 			return log.exit(data.toString());
 		} catch (Exception e) {
-			log.error(MarkerManager.getMarker("COM_LOGGER"), "Failed to read file {}", fileName, e);
+			log.error(MarkerManager.getMarker("JASON_CONSOLE"), "Failed to read file {}", fileName, e);
 			return null;
 		}
 	}
